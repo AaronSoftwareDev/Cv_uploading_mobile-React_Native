@@ -73,6 +73,17 @@ const Login = ({navigation}) => {
   const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
+    if (
+      password.length < 8 ||
+      !/[a-z]/.test(password) ||
+      !/[A-Z]/.test(password)
+    ) {
+      Alert.alert(
+        'Invalid Password',
+        'Password must have a minimum of 8 characters and include both upper and lower case letters.',
+      );
+      return;
+    }
 
     // Perform authentication
     authenticateUser(email, password);
