@@ -32,25 +32,27 @@ const HomeScreen = ({navigation}) => {
           </Text>
         </Card.Title>
       </Card>
-
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text
-          style={{
-            ...styles.whiteText,
-            fontFamily: 'Inter',
-            alignSelf: 'center',
-          }}>
-          Ditch the hassle of traditional job applications! Simply upload your
-          CV in a snap and let CV World transform your professional story into a
-          visually appealing masterpiece.
-        </Text>
+      <Text
+        style={{
+          ...styles.whiteText,
+        }}>
+        Ditch the hassle of traditional job applications! Simply upload your CV
+        in a snap and let CV World transform your professional story into a
+        visually appealing masterpiece.
+      </Text>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <Button
           size="lg"
           color="#235A8A"
           onPress={() => navigation.navigate('Login')}
           containerStyle={{
             backgroundColor: '#235A8A',
-            width: 250,
+            width: 270,
             height: 62,
             marginHorizontal: 30,
             marginVertical: 5,
@@ -66,7 +68,7 @@ const HomeScreen = ({navigation}) => {
           size="lg"
           containerStyle={{
             backgroundColor: '#235A8A',
-            width: 250,
+            width: 270,
             height: 62,
             marginHorizontal: 30,
             marginVertical: 5,

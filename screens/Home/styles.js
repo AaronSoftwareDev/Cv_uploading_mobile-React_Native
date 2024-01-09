@@ -8,14 +8,20 @@ const styles = StyleSheet.create({
     color: '#2D70AA',
     marginTop: 20,
   },
+
   whiteText: {
     color: 'white',
     textAlign: 'center',
-    lineHeight: 16,
+    lineHeight: 18.94,
     fontSize: 14,
     marginTop: 10,
     marginBottom: 5,
     paddingHorizontal: 20,
+    fontFamily: 'Inter',
+    alignSelf: 'center',
+    fontWeight: '300',
+    width: 270,
+    marginTop: 50,
   },
   learnMoreLink: {
     fontSize: 20,
