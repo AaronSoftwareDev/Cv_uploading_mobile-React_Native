@@ -30,6 +30,8 @@ import {addNewItem, addUserinfor, addUserinfor1} from '../../redux/cvSlice.js';
 const CV = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [isSearchExpanded, setSearchExpanded] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
   const [userEmail, setUserEmail] = useState('');
   const [fetchedData, setFetchedData] = useState([]);
   const [userdata, setUserData] = useState([]);
@@ -37,10 +39,9 @@ const CV = ({navigation, route}) => {
   const [fetchedData2, setFetchedData2] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [categories, setCategories] = useState([
-    'Category1',
-    'Category2',
-    'Category3',
-    'Category4',
+    'Electrical',
+    'Software Developer',
+    'Accountancy',
   ]);
 
   const [selectedPdf, setSelectedPdf] = useState({});
@@ -66,6 +67,7 @@ const CV = ({navigation, route}) => {
     <TouchableOpacity
       onPress={() => {
         console.log('Selected category:', item);
+        setSelectedCategory(item);
         setSearchExpanded(false);
       }}
       style={styles.categoryItem}>
@@ -185,9 +187,7 @@ const CV = ({navigation, route}) => {
             source={require('../../assets/logo1.jpg')}
           />
           <Card.Title style={styles.cardTitle}>
-            <Text style={{...styles.fonts, fontSize: 14, fontWeight: '600'}}>
-              CV WORLD
-            </Text>
+            <Text style={{...styles.fonts}}>CV WORLD</Text>
           </Card.Title>
         </View>
       </Card>
@@ -221,26 +221,36 @@ const CV = ({navigation, route}) => {
             <FontAwesomeIcon icon={faSearch} size={16} />
           </TouchableOpacity>
           <View style={{flex: 1}}>
-            {isSearchExpanded && (
+            {isSearchExpanded ? (
               <View style={styles.searchBarContainer}>
                 <TextInput
                   style={styles.searchInput}
                   placeholder="Type Here..."
                   placeholderTextColor="#ffffff"
                   onChangeText={handleSearchTextChange}
-                  onFocus={() => setSearchExpanded(true)} // Set isSearchExpanded to true when the TextInput is focused
-                  onBlur={() => setSearchExpanded(false)} // Set isSearchExpanded to false when the TextInput loses focus
+                  onFocus={() => setSearchExpanded(true)}
+                  onBlur={() => setSearchExpanded(false)}
                 />
-                {searchText.length > 0 &&
-                  isSearchExpanded && ( // Only display categories when there is text in the search input
-                    <View style={styles.flatListContainer}>
-                      <FlatList
-                        data={filteredCategories}
-                        renderItem={renderCategoryItem}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
-                    </View>
-                  )}
+                {searchText.length > 0 && isSearchExpanded && (
+                  <View style={styles.flatListContainer}>
+                    <FlatList
+                      data={filteredCategories}
+                      renderItem={renderCategoryItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  </View>
+                )}
+              </View>
+            ) : (
+              <View>
+                <Text style={styles.boldText_category}>
+                  <Text style={styles.name_summary_bold_Category}>
+                    Category:
+                  </Text>{' '}
+                  <Text style={styles.name_summary_catergory}>
+                    {selectedCategory}
+                  </Text>
+                </Text>
               </View>
             )}
           </View>

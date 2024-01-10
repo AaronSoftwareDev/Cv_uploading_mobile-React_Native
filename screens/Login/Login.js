@@ -140,7 +140,7 @@ const Login = ({navigation}) => {
         <TextInput
           placeholder="Username"
           style={{
-            width: 250,
+            width: 290,
             alignSelf: 'center',
             backgroundColor: '#3C6991',
             color: 'white',
@@ -162,7 +162,7 @@ const Login = ({navigation}) => {
           <TextInput
             placeholder="Password"
             style={{
-              width: 250,
+              width: 290,
               alignSelf: 'center',
               backgroundColor: '#3C6991',
               color: 'white',
@@ -193,7 +193,7 @@ const Login = ({navigation}) => {
         <TouchableWithoutFeedback>
           <View
             style={{
-              width: 250,
+              width: 290,
               height: 62,
               marginVertical: 10,
               borderWidth: 1,

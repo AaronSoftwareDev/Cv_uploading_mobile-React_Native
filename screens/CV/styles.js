@@ -160,6 +160,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 0,
   },
+  name_summary_catergory: {
+    color: 'white',
+    marginLeft: 10,
+    textAlign: 'center',
+    marginTop: 0,
+  },
+  categoryItem: {
+    padding: 10,
+    backgroundColor: '#235A8A',
+    borderWidth: 0,
+  },
+  categoryText: {
+    color: 'white',
+  },
   cardWithRadius: {
     marginBottom: 6,
     padding: 0,
@@ -175,6 +189,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     // You can add more styles if needed
   },
+  boldText_category: {
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    paddingLeft: 5,
+    // You can add more styles if needed
+  },
+
   summaryText: {
     width: '100%',
   },
@@ -228,6 +249,8 @@ const styles = StyleSheet.create({
   },
   fonts: {
     color: '#2D70AA',
+    fontSize: 14,
+    fontWeight: '600',
   },
   learnMoreLink_bottom: {
     fontSize: 14,
@@ -247,7 +270,11 @@ const styles = StyleSheet.create({
   },
   name_summary_bold: {
     fontWeight: 'bold',
-    // Other styling properties for the bold "Name:" text
+  },
+  name_summary_bold_Category: {
+    fontWeight: 'bold',
+    marginLeft: 10,
+    color: 'white',
   },
   imageContainer: {
     flex: 1,
