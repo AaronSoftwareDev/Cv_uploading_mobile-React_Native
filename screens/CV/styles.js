@@ -1,20 +1,25 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
 
 const styles = StyleSheet.create({
   cardTitle: {
-    fontSize: 17,
+    fontSize: scaleFontSize(17),
     fontWeight: '600',
     textAlign: 'center',
     color: '#2D70AA',
-    marginTop: 10,
-    marginLeft: 10,
+    marginTop: verticalScale(10),
+    marginLeft: horizontalScale(10),
+  },
+  initials: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(22),
   },
   searchIcon: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#235A8A',
-    height: 25,
-    width: 25,
+    height: verticalScale(25),
+    width: horizontalScale(25),
   },
   categoryFlatList: {
     position: 'absolute',
@@ -23,10 +28,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   flatListContainer: {
-    marginBottom: 40,
+    flex: 1,
+
+    marginBottom: verticalScale(40),
     position: 'absolute',
     bottom: 0,
-    zIndex: 2,
     left: 0,
     zIndex: 100,
     right: 0,
@@ -37,32 +43,36 @@ const styles = StyleSheet.create({
   subscriptionText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: '150',
-    fontSize: 16,
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 20,
+    fontWeight: '200',
+    fontSize: scaleFontSize(16),
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(10),
+    padding: horizontalScale(20),
+  },
+  categoryStyles: {
+    padding: horizontalScale(5),
   },
   subscriptionText_upload: {
+    fontFamily: 'RobotoSlab-Light',
     color: 'white',
     textAlign: 'center',
-    fontWeight: '150',
-    fontSize: 24,
-    marginTop: 5,
-    marginBottom: 5,
-    padding: 10,
+    fontWeight: '200',
+    fontSize: scaleFontSize(32),
+    marginTop: verticalScale(5),
+    marginBottom: verticalScale(10),
+    padding: horizontalScale(10),
   },
   outer_user: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   user_summary: {
-    marginTop: 0,
+    marginTop: verticalScale(0),
   },
   outer_user_upload: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
   },
   search: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
     flexDirection: 'row',
     backgroundColor: '#5188B6',
   },
@@ -74,7 +84,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#3C6991',
-
     padding: 10,
   },
   user_intial_summary: {
@@ -82,51 +91,52 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: '#3C6991',
 
-    padding: 10,
+    padding: horizontalScale(10),
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center', // Ensure items are vertically aligned
     justifyContent: 'space-between', // Distribute items along the row
-    paddingHorizontal: 10, // Add some padding to the row
-    marginTop: 10,
-    padding: 10,
+    paddingHorizontal: horizontalScale(10), // Add some padding to the row
+    marginTop: verticalScale(10),
+    padding: horizontalScale(10),
     backgroundColor: '#5188B6', // Adjust the top margin if needed
   },
   searchBarContainer: {
     flex: 1, // Allow the TextInput to expand within the row
-    marginLeft: 10,
-
-    // Adjust spacing between the search icon and TextInput if needed
+    marginLeft: horizontalScale(10),
   },
   searchInput: {
+    fontFamily: 'RobotoSlab-Regular',
     flex: 1,
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 25,
-    height: 40, // Adjust the height if necessary
+    height: verticalScale(35), // Adjust the height if necessary
     color: 'white',
-    paddingHorizontal: 10, // Add padding for text input
+    paddingHorizontal: horizontalScale(10), // Add padding for text input
     backgroundColor: '#306088', // Example color, adjust as needed
-    // Center the text vertically within the input
+
     textAlignVertical: 'center',
   },
   circularInitials: {
     width: 50,
     height: 50,
     borderRadius: 25, // half of the width/height to make it circular
-    backgroundColor: 'gray', // Adjust the color as needed
+    backgroundColor: '#D9D9D9', // Adjust the color as needed
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  updateButton: {},
+  initials: {
+    color: '#2D70AA',
+  },
+  updateButton: {justifyContent: 'center', alignItems: 'center'},
   buttonContainer_upload: {
     backgroundColor: '#235A8A',
-    width: 250,
-    height: 45,
-    marginHorizontal: 0,
-    marginVertical: 0,
+    width: horizontalScale(250),
+    height: verticalScale(45),
+    marginHorizontal: horizontalScale(0),
+    marginVertical: verticalScale(0),
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 15,
@@ -135,36 +145,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#5188B6',
-    paddingLeft: 10,
+    paddingLeft: horizontalScale(10),
   },
   name: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(20),
     color: 'white',
     marginLeft: 10,
   },
   nameColumn: {
     flexDirection: 'column',
-    paddingLeft: 5,
-    paddingRight: 10,
+    justifyContent: 'fle',
+    alignContent: 'center',
 
     maxWidth: '80%',
   },
   userDetailsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    justifyContent: 'center',
+    marginBottom: verticalScale(0),
   },
 
   name_summary: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(15),
     color: 'black',
-    marginLeft: 10,
+
     textAlign: 'center',
     marginTop: 0,
   },
   name_summary_catergory: {
+    fontFamily: 'RobotoSlab-Light',
+    fontSize: scaleFontSize(15),
     color: 'white',
     marginLeft: 10,
     textAlign: 'center',
     marginTop: 0,
+    padding: 2,
+    marginRight: '2%',
   },
   categoryItem: {
     padding: 10,
@@ -172,6 +191,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   categoryText: {
+    fontFamily: 'RobotoSlab-ExtraLight',
+    fontSize: scaleFontSize(18),
     color: 'white',
   },
   cardWithRadius: {
@@ -185,14 +206,48 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   boldText: {
+    flexDirection: 'row',
+    alignItems: 'center',
     fontWeight: 'bold',
     flexWrap: 'wrap',
+    alignContent: 'center',
+    justifyContent: 'center',
+
     // You can add more styles if needed
   },
+  addButton: {
+    borderWidth: 2,
+    borderColor: '#235A8A', // Blue color
+    borderRadius: 5,
+    paddingVertical: verticalScale(3), // Adjust the vertical padding
+    paddingHorizontal: horizontalScale(10), // Adjust the horizontal padding
+    marginTop: 10, // Add margin if needed
+    marginBottom: 0,
+  },
+  editButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 8,
+    marginTop: 0,
+    // Blue color
+    marginBottom: 10,
+    marginLeft: 2,
+    paddingVertical: 2, // Adjust the vertical padding
+    paddingHorizontal: 1, // Adjust the horizontal padding
+    // Add margin if needed
+    marginBottom: 0,
+    alignSelf: 'center',
+  },
+  summaryText: {
+    fontSize: scaleFontSize(15),
+    fontFamily: 'RobotoSlab-Regular',
+  },
+
   boldText_category: {
     fontWeight: 'bold',
     flexWrap: 'wrap',
-    paddingLeft: 5,
+    paddingLeft: horizontalScale(5),
+    paddingRight: '2%',
     // You can add more styles if needed
   },
 
@@ -213,11 +268,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     padding: 10, // Adjust padding as needed
-    marginVertical: 6,
-    margin: 6,
+    marginVertical: verticalScale(6),
+    margin: horizontalScale(6),
     zIndex: 1,
-    justifyContent: 'center', // Vertically center content
-    alignItems: 'center', // Adjust margin as needed
+    // Vertically center content
+    // Adjust margin as needed
   },
   customCard_cv: {
     backgroundColor: 'white', // Assuming the background color you need
@@ -229,17 +284,50 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     padding: 10, // Adjust padding as needed
-    marginVertical: 6,
-    margin: 6,
+    marginVertical: verticalScale(6),
+    margin: horizontalScale(6),
     justifyContent: 'center', // Vertically center content
     alignItems: 'center', // Adjust margin as needed
   },
   upload_button: {},
   image: {
-    width: 50,
-    height: 35,
+    width: horizontalScale(50),
+    height: verticalScale(35),
     borderRadius: 25,
     resizeMode: 'cover',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent background
+  },
+  modalContent: {
+    width: '80%', // Adjust the width as needed
+    backgroundColor: '#fff', // Background color of the modal
+    padding: horizontalScale(20),
+    borderRadius: 10,
+  },
+  summaryInput: {
+    height: verticalScale(90),
+    color: 'black',
+    borderColor: '#9bb3de',
+    borderWidth: 1,
+    marginBottom: verticalScale(10),
+    paddingHorizontal: horizontalScale(10),
+  },
+  saveButton: {
+    backgroundColor: '#235A8A',
+    padding: horizontalScale(8),
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  closeButton: {
+    backgroundColor: 'red',
+    padding: 8,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginLeft: '5%',
   },
   image_upload: {
     width: 50,
@@ -249,74 +337,87 @@ const styles = StyleSheet.create({
   },
   fonts: {
     color: '#2D70AA',
-    fontSize: 14,
+    fontSize: scaleFontSize(14),
     fontWeight: '600',
   },
   learnMoreLink_bottom: {
-    fontSize: 14,
+    fontSize: scaleFontSize(14),
     fontWeight: '300',
     textAlign: 'center',
     color: 'white',
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   input: {
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 5,
-    height: 40,
+    height: verticalScale(40),
     color: 'white',
-    marginVertical: 5,
-    paddingHorizontal: 10,
+    marginVertical: verticalScale(5),
+    paddingHorizontal: horizontalScale(10),
   },
   name_summary_bold: {
     fontWeight: 'bold',
   },
+  name_summary_catergory: {
+    fontFamily: 'RobotoSlab-ExtraLight',
+    color: 'white',
+    marginLeft: horizontalScale(10),
+    fontSize: scaleFontSize(20),
+    textAlign: 'center',
+    marginTop: 0,
+    padding: 2,
+    marginRight: '2%',
+  },
   name_summary_bold_Category: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(18),
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: horizontalScale(10),
     color: 'white',
   },
   imageContainer: {
     flex: 1,
     alignItems: 'center',
-    margin: 5,
+    margin: horizontalScale(5),
   },
   imageContainer_upload: {
     alignItems: 'center',
-    margin: 5,
+    margin: horizontalScale(5),
   },
   cardContainer: {
-    margin: 0,
-    paddingVertical: 0,
-    paddingHorizontal: 70,
+    margin: horizontalScale(0),
+    paddingVertical: verticalScale(0),
+    alignContent: 'center',
+    justifyContent: 'center',
     borderRadius: 50,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
   },
   buttonContainer: {
     backgroundColor: '#235A8A',
-    width: 250,
-    height: 62,
-    marginHorizontal: 30,
-    marginVertical: 5,
+    width: horizontalScale(250),
+    height: verticalScale(62),
+    marginHorizontal: horizontalScale(30),
+    marginVertical: verticalScale(5),
     borderWidth: 1,
     borderColor: '#5188B6',
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: scaleFontSize(24),
     fontWeight: '300',
     color: 'white',
   },
   buttonText_upload: {
-    fontSize: 16,
+    fontSize: scaleFontSize(16),
     fontWeight: '300',
     color: 'white',
   },
   totalViews: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 16,
-    marginTop: 10,
+    fontSize: scaleFontSize(16),
+    marginTop: verticalScale(10),
   },
 });
 

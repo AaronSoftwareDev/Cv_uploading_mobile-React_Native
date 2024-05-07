@@ -5,7 +5,13 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
+import {BASE_URL} from '../../env';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
 import {
   faRightToBracket,
   faSearch,
@@ -20,7 +26,12 @@ import {useNavigation} from '@react-navigation/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import styles from './styles';
-import {addNewItem, addUserinfor, addUserinfor1} from '../../redux/cvSlice.js';
+import {
+  addNewItem,
+  addUserinfor,
+  addUserinfor1,
+  addLoginState,
+} from '../../redux/cvSlice.js';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -36,6 +47,7 @@ const Register = () => {
     address: '',
     phoneNumber: '',
     emailAddress: '',
+    agentcode: '',
     password: '',
     repeatPassword: '',
   });
@@ -46,6 +58,7 @@ const Register = () => {
     {key: 'address', placeholder: 'Address', icon: 'user'},
     {key: 'phoneNumber', placeholder: 'Phone Number', icon: 'user'},
     {key: 'emailAddress', placeholder: 'Email Address', icon: 'user'},
+    {key: 'agentcode', placeholder: 'Agent Code', icon: 'user'},
     {key: 'password', placeholder: 'Password', icon: 'lock'},
     {key: 'repeatPassword', placeholder: 'Repeat Password', icon: 'lock'},
   ];
@@ -53,8 +66,57 @@ const Register = () => {
   const handleInputChange = (key, value) => {
     setFormData(prevData => ({...prevData, [key]: value}));
   };
+  function generateRandomText(length) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let randomText = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * alphabet.length);
+      randomText += alphabet.charAt(randomIndex);
+    }
+
+    return randomText;
+  }
+  const validatePhoneNumber = phoneNumber => {
+    const zambianPhoneNumberRegex =
+      /^(\+2607\d|07\d|(\+2609[56789]|09[56789]))\d{7}$/;
+    return zambianPhoneNumberRegex.test(phoneNumber);
+  };
+
+  const validateEmail = email => {
+    // Use a simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = password => {
+    // Password must be at least 8 characters and contain at least one uppercase letter and one lowercase letter
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleRegister = async () => {
+    // Validate phone number, email, and password
+    if (!validatePhoneNumber(formData.phoneNumber)) {
+      Alert.alert(
+        'Invalid Phone Number',
+        'Please enter a valid Zambian phone number.',
+      );
+      return;
+    }
+
+    if (!validateEmail(formData.emailAddress)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      return;
+    }
+
+    if (!validatePassword(formData.password)) {
+      Alert.alert(
+        'Invalid Password',
+        'Password must be at least 8 characters and contain at least one uppercase letter and one lowercase letter.',
+      );
+      return;
+    }
     if (formData.password !== formData.repeatPassword) {
       Alert.alert(
         'Passwords do not match',
@@ -64,8 +126,11 @@ const Register = () => {
     }
 
     try {
+      console.log('this is the form data with agent code', formData);
+      const randomValue = Math.floor(Math.random() * 1000);
+      const randomText = generateRandomText(5);
       const response = await fetch(
-        'http://172.20.10.8/CV_WORLD_APP/cv_world/Database/Register.php',
+        `${BASE_URL}/Register.php?${randomText}=${randomValue}`,
         {
           method: 'POST',
           headers: {
@@ -85,6 +150,7 @@ const Register = () => {
           const data = [responseData.selectedRecord];
           console.log('Server Response:', data);
           dispatch(addNewItem(data));
+          dispatch(addLoginState(data[0].email));
           Alert.alert(
             'Registration Successful',
             'You have been registered successfully.',
@@ -123,146 +189,148 @@ const Register = () => {
   };
 
   return (
-    <View
-      style={{
-        marginTop: 0,
-        paddingHorizontal: 0,
-        width: '100%',
-        flex: 1,
-        backgroundColor: '#2D70AA',
-      }}>
-      <Card
-        containerStyle={{
-          margin: 0,
-          paddingVertical: 10,
-          paddingHorizontal: 30,
-          borderRadius: 50,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-        }}>
-        <Card.Image
-          style={{padding: 0}}
-          source={require('../../assets/logo1.jpg')}
-        />
-        <Card.Title style={styles.cardTitle}>
-          <Text style={{...styles.fonts, fontSize: 24, fontWeight: '600'}}>
-            CV WORLD
-          </Text>
-        </Card.Title>
-      </Card>
-      <Text
-        style={{
-          color: 'white',
-          textAlign: 'center',
-          fontWeight: '250',
-          fontSize: 20,
-          marginTop: 10,
-          marginBottom: 10,
-        }}>
-        Job Seeker Registration
-      </Text>
-      <View style={{alignItems: 'center'}}>
-        <ScrollView style={styles.scrollView}>
-          {inputFields.map(field => (
-            <View key={field.key} style={{position: 'relative'}}>
-              <TextInput
-                placeholder={field.placeholder}
-                style={styles.input}
-                placeholderTextColor="white"
-                onChangeText={text => handleInputChange(field.key, text)}
-                secureTextEntry={
-                  (field.key === 'password' ||
-                    field.key === 'repeatPassword') &&
-                  !showPassword
-                }
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={{flex: 1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          style={{backgroundColor: '#2D70AA'}}>
+          <View
+            style={{
+              flex: 1,
+
+              paddingHorizontal: horizontalScale(0),
+              width: '100%',
+              backgroundColor: '#2D70AA',
+            }}>
+            <Card
+              containerStyle={{
+                margin: verticalScale(0),
+                paddingVertical: verticalScale(10),
+                paddingHorizontal: horizontalScale(30),
+                borderRadius: 50,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+              }}>
+              <Card.Image
+                style={{padding: 0}}
+                source={require('../../assets/logo1.jpg')}
               />
-              {field.key === 'password' || field.key === 'repeatPassword' ? (
-                <TouchableOpacity
+              <Card.Title style={styles.cardTitle}>
+                <Text
                   style={{
-                    position: 'absolute',
-                    top: 14,
-                    right: 20,
-                  }}
-                  onPress={togglePasswordVisibility}>
-                  <FontAwesomeIcon
-                    icon={showPassword ? faEye : faEyeSlash}
-                    size={24}
-                    color="#074173"
-                  />
-                </TouchableOpacity>
-              ) : null}
-            </View>
-          ))}
-        </ScrollView>
-        <Button
-          color="#235A8A"
-          size="lg"
-          containerStyle={styles.registerButton}
-          onPress={handleRegister}>
-          <View>
-            <Text style={{fontSize: 20, fontWeight: '300', color: 'white'}}>
-              Register
+                    marginTop: verticalScale(8),
+                    fontFamily: 'RobotoSlab-SemiBold',
+                    fontSize: scaleFontSize(35),
+                    fontWeight: '600',
+                    color: '#235A8A',
+                  }}>
+                  CV WORLD
+                </Text>
+              </Card.Title>
+            </Card>
+            <Text
+              style={{
+                fontFamily: 'RobotoSlab-Light',
+                color: 'white',
+                textAlign: 'center',
+                fontWeight: '300',
+                fontSize: scaleFontSize(32),
+                marginTop: verticalScale(10),
+                marginBottom: verticalScale(10),
+              }}>
+              Job Seeker Registration
             </Text>
+            <View style={{alignItems: 'center', marginBottom: '20%'}}>
+              <ScrollView style={styles.scrollView}>
+                {inputFields.map(field => (
+                  <View key={field.key} style={{position: 'relative'}}>
+                    <TextInput
+                      placeholder={field.placeholder}
+                      style={styles.input}
+                      placeholderTextColor="white"
+                      onChangeText={text => handleInputChange(field.key, text)}
+                      secureTextEntry={
+                        (field.key === 'password' ||
+                          field.key === 'repeatPassword') &&
+                        !showPassword
+                      }
+                    />
+                    {field.key === 'password' ||
+                    field.key === 'repeatPassword' ? (
+                      <TouchableOpacity
+                        style={{
+                          position: 'absolute',
+                          top: 14,
+                          right: 20,
+                        }}
+                        onPress={togglePasswordVisibility}>
+                        <FontAwesomeIcon
+                          icon={showPassword ? faEye : faEyeSlash}
+                          size={24}
+                          color="#074173"
+                        />
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
+                ))}
+              </ScrollView>
+              <Button
+                color="#235A8A"
+                size="lg"
+                containerStyle={styles.registerButton}
+                onPress={handleRegister}>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                  <Text
+                    style={{
+                      fontFamily: 'RobotoSlab-Regular',
+                      fontSize: scaleFontSize(25),
+                      fontWeight: '300',
+                      color: 'white',
+                      alignSelf: 'center',
+                    }}>
+                    Register
+                  </Text>
+                </View>
+              </Button>
+              <View>
+                <Text>{''}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                marginTop: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                backgroundColor: '#3C6991',
+                height: 50,
+              }}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <FontAwesomeIcon
+                  icon={faLeftLong}
+                  style={{color: '#ffffff', marginLeft: 6}}
+                />
+                <Text
+                  style={{
+                    color: '#ffffff',
+                    marginTop: 5,
+                    fontFamily: 'RobotoSlab-Regular',
+                  }}>
+                  Back
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </Button>
-      </View>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          backgroundColor: '#3C6991',
-          height: 50,
-        }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FontAwesomeIcon
-            icon={faLeftLong}
-            style={{color: '#0d0d0d', marginLeft: 6}}
-          />
-          <Text style={{color: '#ffffff', marginTop: 5}}>Back</Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('Jobs')}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-          }}>
-          <FontAwesomeIcon
-            icon={faBriefcase}
-            style={{color: '#0d0d0d', marginLeft: 6}}
-          />
-          <Text style={{color: '#ffffff', marginTop: 4, fontSize: 12}}>
-            Jobs
-          </Text>
-        </TouchableOpacity> */}
-        {/* <TouchableOpacity
-          onPress={() => handleNavigation('Screen4')}
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-          }}>
-          <FontAwesomeIcon icon={faMaximize} style={{color: '#0d0d0d'}} />
-          <Text style={{color: '#ffffff', marginTop: 4, fontSize: 12}}>
-            Expand View
-          </Text>
-        </TouchableOpacity> */}
-        {/* <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <FontAwesomeIcon
-            icon={faRightToBracket}
-            style={{color: '#0d0d0d', marginLeft: 6}}
-          />
-          <Text style={{color: '#ffffff', marginTop: 4, fontSize: 12}}>
-            Logout
-          </Text>
-        </TouchableOpacity> */}
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

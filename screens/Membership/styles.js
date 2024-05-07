@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
 
 const styles = StyleSheet.create({
   cardTitle: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25, // half of the width/height to make it circular
-    backgroundColor: 'gray', // Adjust the color as needed
+    backgroundColor: '#D9D9D9', // Adjust the color as needed
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: horizontalScale(35),
     borderRadius: 10,
     alignItems: 'center',
     elevation: 5, // Shadow on Android
@@ -37,9 +38,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  modalView_spenn: {
+    backgroundColor: 'white',
+    paddingTop: verticalScale(10),
+    paddingBottom: verticalScale(10),
+    paddingLeft: horizontalScale(50),
+    paddingRight: horizontalScale(50),
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // Shadow on Android
+  },
   modalText: {
-    fontSize: 18,
-    marginBottom: 20,
+    fontSize: scaleFontSize(32),
+    color: '#3c4b64',
   },
   confirmButton: {
     backgroundColor: '#235A8A',
@@ -52,13 +64,18 @@ const styles = StyleSheet.create({
   confirmText: {
     fontSize: 16,
     fontWeight: '300',
-    color: 'white',
+    color: '#ffffff',
+  },
+  initials: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(20),
   },
   subscriptionText: {
+    fontFamily: 'RobotoSlab-Light',
     color: 'white',
     textAlign: 'center',
-    fontWeight: '150',
-    fontSize: 16,
+    fontWeight: '200',
+    fontSize: scaleFontSize(24),
     marginTop: 10,
     marginBottom: 10,
     padding: 20,
@@ -73,6 +90,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   name: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(20),
     color: 'white',
     marginLeft: 10,
   },

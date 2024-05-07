@@ -21,7 +21,8 @@
         android:launchMode="singleTask"
          android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize"
-        android:exported="true">
+        android:exported="true"
+        android:theme="@style/BootTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

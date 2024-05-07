@@ -1,76 +1,134 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
 
 const styles = StyleSheet.create({
   cardTitle: {
-    fontSize: 17,
+    fontSize: scaleFontSize(17),
     fontWeight: '600',
     textAlign: 'center',
     color: '#2D70AA',
-    marginTop: 10,
-    marginLeft: 10,
+    marginTop: verticalScale(10),
+    marginLeft: horizontalScale(10),
+  },
+  initials: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(22),
   },
   circularInitials: {
-    width: 50,
-    height: 50,
+    width: horizontalScale(50),
+    height: verticalScale(50),
     borderRadius: 25, // half of the width/height to make it circular
-    backgroundColor: 'gray', // Adjust the color as needed
+    backgroundColor: '#D9D9D9', // Adjust the color as needed
     justifyContent: 'center',
     alignItems: 'center',
   },
   subscriptionText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: '150',
-    fontSize: 16,
-    marginTop: 10,
-    marginBottom: 10,
+    fontWeight: '200',
+    fontSize: scaleFontSize(16),
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(10),
     padding: 20,
   },
   subscriptionText_upload: {
+    fontFamily: 'RobotoSlab-Light',
     color: 'white',
     textAlign: 'center',
-    fontWeight: '150',
-    fontSize: 24,
-    marginTop: 5,
-    marginBottom: 5,
-    padding: 10,
+    fontWeight: '200',
+    fontSize: scaleFontSize(32),
+    marginTop: verticalScale(5),
+    marginBottom: verticalScale(10),
+    padding: horizontalScale(10),
   },
   outer_user: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center', // Ensure items are vertically aligned
     justifyContent: 'space-between', // Distribute items along the row
     paddingHorizontal: 10, // Add some padding to the row
-    marginTop: 10,
     padding: 10,
-    backgroundColor: '#5188B6', // Adjust the top margin if needed
+    backgroundColor: '#5188B6',
+    alignContent: 'center', // Adjust the top margin if needed
   },
   searchBarContainer: {
-    flex: 1, // Allow the TextInput to expand within the row
-    marginLeft: 10,
+    // Allow the TextInput to expand within the row
+    marginLeft: horizontalScale(10),
 
     // Adjust spacing between the search icon and TextInput if needed
   },
-  updateButton: {},
+
   searchInput: {
-    flex: 1,
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 25,
     height: 40, // Adjust the height if necessary
     color: 'white',
-    paddingHorizontal: 10, // Add padding for text input
+    paddingHorizontal: 20, // Add padding for text input
     backgroundColor: '#306088', // Example color, adjust as needed
-    // Center the text vertically within the input
+    width: '80%',
     textAlignVertical: 'center',
+  },
+  categoryStyles: {
+    padding: 5,
+  },
+  categoryItem: {
+    padding: 10,
+    backgroundColor: '#235A8A',
+    borderWidth: 0,
+  },
+  categoryText: {
+    fontFamily: 'RobotoSlab-ExtraLight',
+    fontSize: scaleFontSize(18),
+    color: 'white',
+  },
+  boldText_category: {
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
+    paddingLeft: 5,
+    paddingRight: '2%',
+    // You can add more styles if needed
+  },
+  name_summary_catergory: {
+    fontFamily: 'RobotoSlab-ExtraLight',
+    color: 'white',
+    marginLeft: horizontalScale(10),
+    fontSize: scaleFontSize(20),
+    textAlign: 'center',
+    marginTop: 0,
+    padding: 2,
+    marginRight: '2%',
+  },
+  name_summary_bold_Category: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(18),
+    fontWeight: 'bold',
+    marginLeft: horizontalScale(10),
+    color: 'white',
+  },
+  flatListContainer: {
+    marginBottom: 40,
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 2,
+    left: 0,
+    zIndex: 100,
+    right: 0,
+    backgroundColor: '#fff', // Adjust background color as needed
+    elevation: 5,
+    // Add elevation for shadow if desired
   },
   outer_user_upload: {
     marginTop: 5,
   },
   searchIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#235A8A',
+    height: verticalScale(25),
+    width: horizontalScale(25),
   },
   search: {
     marginTop: 5,
@@ -88,20 +146,24 @@ const styles = StyleSheet.create({
   },
   buttonContainer_upload: {
     backgroundColor: '#235A8A',
-    width: 250,
-    height: 45,
-    marginHorizontal: 0,
-    marginVertical: 0,
+    width: horizontalScale(250),
+    height: verticalScale(40),
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginHorizontal: horizontalScale(0),
+    marginVertical: verticalScale(0),
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 15,
   },
   buttonContainer_upload_2: {
     backgroundColor: '#235A8A',
-    width: 150,
-    height: 45,
-    marginHorizontal: 0,
-    marginVertical: 0,
+    width: horizontalScale(150),
+    height: verticalScale(40),
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginHorizontal: horizontalScale(0),
+    marginVertical: verticalScale(0),
     borderWidth: 1,
     borderColor: '#5188B6',
     borderRadius: 15,
@@ -113,18 +175,20 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   name: {
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(20),
     color: 'white',
-    marginLeft: 10,
+    marginLeft: horizontalScale(10),
   },
   image: {
-    width: 50,
-    height: 35,
+    width: horizontalScale(50),
+    height: verticalScale(35),
     borderRadius: 25,
     resizeMode: 'cover',
   },
   image_upload: {
-    width: 50,
-    height: 50,
+    width: horizontalScale(50),
+    height: verticalScale(50),
     borderRadius: 25,
     resizeMode: 'cover',
   },
@@ -132,11 +196,11 @@ const styles = StyleSheet.create({
     color: '#2D70AA',
   },
   learnMoreLink_bottom: {
-    fontSize: 14,
+    fontSize: scaleFontSize(14),
     fontWeight: '300',
     textAlign: 'center',
     color: 'white',
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   input: {
     borderWidth: 1,
@@ -179,7 +243,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   buttonText_upload: {
-    fontSize: 16,
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: scaleFontSize(22),
     fontWeight: '300',
     color: 'white',
   },

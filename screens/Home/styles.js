@@ -1,34 +1,33 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
 
 const styles = StyleSheet.create({
   cardTitle: {
-    fontSize: 24,
+    fontSize: scaleFontSize(24),
     fontWeight: '600',
     textAlign: 'center',
     color: '#2D70AA',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
 
   whiteText: {
     color: 'white',
     textAlign: 'center',
-    lineHeight: 18.94,
-    fontSize: 14,
-    marginTop: 10,
-    marginBottom: 5,
-    paddingHorizontal: 20,
-    fontFamily: 'Inter',
+    lineHeight: verticalScale(21.94),
+    fontSize: scaleFontSize(25),
+    paddingHorizontal: horizontalScale(15),
+    fontFamily: 'RobotoSlab-Light',
     alignSelf: 'center',
     fontWeight: '300',
-    width: 270,
-    marginTop: 50,
+    width: '90%',
+    marginTop: verticalScale(45),
   },
   learnMoreLink: {
-    fontSize: 20,
+    fontSize: scaleFontSize(20),
     fontWeight: '300',
     textAlign: 'center',
     color: 'white',
-    marginTop: 5,
+    marginTop: verticalScale(5),
   },
 });
 

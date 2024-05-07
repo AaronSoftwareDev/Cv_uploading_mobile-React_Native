@@ -39,7 +39,7 @@ target 'cv_world' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'cv_worldTests' do
+  target 'cv_uploadTests' do
     inherit! :complete
     # Pods for testing
   end

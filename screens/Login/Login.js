@@ -7,32 +7,60 @@ import {
   Alert,
   Text,
   TouchableWithoutFeedback,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
+import {BASE_URL} from '../../env';
+
 import {Card, Button} from '@rneui/themed';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
-
-// const users = [
-//   {email: 'jobseer1@example.com', password: 'password1'},
-//   {email: 'jobseer2@example.com', password: 'password2'},
-// ];
+import {
+  faEye,
+  faEyeSlash,
+  faRightToBracket,
+} from '@fortawesome/free-solid-svg-icons';
+import {useDispatch, useSelector} from 'react-redux';
+import {horizontalScale, scaleFontSize, verticalScale} from '../../scaling';
+import {
+  addNewItem,
+  addUserinfor,
+  addUserinfor1,
+  addLoginState,
+} from '../../redux/cvSlice.js';
 
 const Login = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // http://172.25.160.1/CV_WORLD_APP/cv_world/Database/Auth.php'
+  const dispatch = useDispatch();
+  function generateRandomText(length) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let randomText = '';
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * alphabet.length);
+      randomText += alphabet.charAt(randomIndex);
+    }
+
+    return randomText;
+  }
 
   const isValidEmail = email => {
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.(com|com\.br|co\.uk|net|org|edu|gov|info|biz|io)$/i;
     return emailRegex.test(email);
   };
 
   const authenticateUser = async (email, password) => {
+    console.log(email);
+    console.log(password);
     try {
+      const randomValue = Math.floor(Math.random() * 1000);
+      const randomText = generateRandomText(5);
       const response = await fetch(
-        'http://172.20.10.8/CV_WORLD_APP/cv_world/Database/Auth.php',
+        `${BASE_URL}/Auth.php?${randomText}=${randomValue}`,
         {
           method: 'POST',
           headers: {
@@ -51,7 +79,18 @@ const Login = ({navigation}) => {
       if (data) {
         console.log('User authenticated successfully');
         console.log('this is the data', data);
-        navigation.navigate('CV', {email});
+
+        if (data.redirect === 'cv_agent') {
+          dispatch(addLoginState(data.dbEmail));
+          navigation.navigate('CV_agent', {email});
+        } else if (data.redirect === 'cv') {
+          dispatch(addLoginState(data.dbEmail));
+          navigation.navigate('CV', {email});
+        } else if (data.redirect === 'change_password') {
+          navigation.navigate('ChangePassword', {email});
+        } else {
+          console.log('Unknown role or redirect value:', data.redirect);
+        }
       } else {
         console.log('Invalid credentials');
         console.log(data);
@@ -69,23 +108,24 @@ const Login = ({navigation}) => {
       );
     }
   };
-
+  const handleforgotpassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
   const handleLogin = () => {
     console.log('Email:', email);
     console.log('Password:', password);
-    if (
-      password.length < 8 ||
-      !/[a-z]/.test(password) ||
-      !/[A-Z]/.test(password)
-    ) {
-      Alert.alert(
-        'Invalid Password',
-        'Password must have a minimum of 8 characters and include both upper and lower case letters.',
-      );
-      return;
-    }
+    // if (
+    //   password.length < 8 ||
+    //   !/[a-z]/.test(password) ||
+    //   !/[A-Z]/.test(password)
+    // ) {
+    //   Alert.alert(
+    //     'Invalid Password',
+    //     'Password must have a minimum of 8 characters and include both upper and lower case letters.',
+    //   );
+    //   return;
+    // }
 
-    // Perform authentication
     authenticateUser(email, password);
   };
 
@@ -98,161 +138,209 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <View
-      style={{
-        marginTop: 0,
-        paddingHorizontal: 0,
-        width: '100%',
-        flex: 1,
-        backgroundColor: '#2D70AA',
-      }}>
-      <Card
-        containerStyle={{
-          margin: 0,
-          paddingVertical: 10,
-          paddingHorizontal: 30,
-          borderRadius: 50,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-        }}>
-        <Card.Image
-          style={{padding: 0}}
-          source={require('../../assets/logo1.jpg')}
-        />
-        <Card.Title style={{fontSize: 24, fontWeight: '600'}}>
-          CV WORLD
-        </Card.Title>
-      </Card>
-
-      <Text
-        style={{
-          color: 'white',
-          textAlign: 'center',
-          fontWeight: '300',
-          fontSize: 24,
-          marginTop: 10,
-          marginBottom: 10,
-        }}>
-        Job Seeker
-      </Text>
-
-      <View style={{alignItems: 'center'}}>
-        <TextInput
-          placeholder="Username"
-          style={{
-            width: 290,
-            alignSelf: 'center',
-            backgroundColor: '#3C6991',
-            color: 'white',
-            marginVertical: 5,
-            padding: 10,
-            borderRadius: 5,
-          }}
-          placeholderTextColor="white"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          keyboardType="email-address" // Set keyboard type to email
-        />
-        {email.length > 0 && !isValidEmail(email) && (
-          <Text style={{color: 'red', alignSelf: 'center'}}>
-            Please enter a valid email address.
-          </Text>
-        )}
-        <View style={{position: 'relative'}}>
-          <TextInput
-            placeholder="Password"
-            style={{
-              width: 290,
-              alignSelf: 'center',
-              backgroundColor: '#3C6991',
-              color: 'white',
-              marginVertical: 5,
-              padding: 10,
-              borderRadius: 5,
-            }}
-            placeholderTextColor="white"
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={text => setPassword(text)}
-          />
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              top: 23,
-              right: 20,
-            }}
-            onPress={togglePasswordVisibility}>
-            <FontAwesomeIcon
-              icon={showPassword ? faEye : faEyeSlash}
-              size={24}
-              color="#074173"
-            />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableWithoutFeedback>
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={{flex: 1}}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          style={{backgroundColor: '#2D70AA'}}>
           <View
             style={{
-              width: 290,
-              height: 62,
-              marginVertical: 10,
-              borderWidth: 1,
-              borderColor: '#5188B6',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 5,
-              overflow: 'hidden', // Ensure that child content doesn't overflow
+              flex: 1,
+
+              paddingHorizontal: horizontalScale(0),
+              width: '100%',
+              backgroundColor: '#2D70AA',
             }}>
-            <Button
-              color="#235A8A"
-              onPress={handleLogin}
-              size="lg"
+            <Card
               containerStyle={{
-                backgroundColor: '#235A8A',
-                width: '100%', // Take the full width of the parent view
-                height: '100%', // Take the full height of the parent view
+                margin: verticalScale(0),
+                paddingVertical: verticalScale(10),
+                paddingHorizontal: horizontalScale(30),
+                borderRadius: 50,
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
               }}>
+              <Card.Image
+                style={{padding: 0}}
+                source={require('../../assets/logo1.jpg')}
+              />
+              <Card.Title
+                style={{
+                  marginTop: verticalScale(8),
+                  fontFamily: 'RobotoSlab-SemiBold',
+                  fontSize: scaleFontSize(35),
+                  fontWeight: '600',
+                  color: '#235A8A',
+                }}>
+                CV WORLD
+              </Card.Title>
+            </Card>
+
+            <Text
+              style={{
+                fontFamily: 'RobotoSlab-Light',
+                color: 'white',
+                textAlign: 'center',
+                fontWeight: '300',
+                fontSize: scaleFontSize(32),
+                marginTop: verticalScale(10),
+                marginBottom: verticalScale(10),
+              }}>
+              Job Seeker
+            </Text>
+
+            <View style={{alignItems: 'center'}}>
+              <TextInput
+                placeholder="Username"
+                style={{
+                  fontFamily: 'RobotoSlab-Regular',
+                  fontSize: scaleFontSize(15),
+                  width: horizontalScale(290),
+                  alignSelf: 'center',
+                  backgroundColor: '#3C6991',
+                  color: 'white',
+                  marginVertical: verticalScale(5),
+                  padding: horizontalScale(10),
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: '#5188B6',
+                }}
+                placeholderTextColor="white"
+                value={email}
+                onChangeText={text => setEmail(text)}
+                keyboardType="email-address"
+              />
+              {email.length > 0 && !isValidEmail(email) && (
+                <Text
+                  style={{
+                    color: 'red',
+                    alignSelf: 'center',
+                    fontFamily: 'RobotoSlab-Light',
+                    fontSize: scaleFontSize(18),
+                  }}>
+                  Please enter a valid email address.
+                </Text>
+              )}
+              <View style={{position: 'relative'}}>
+                <TextInput
+                  placeholder="Password"
+                  style={{
+                    fontFamily: 'RobotoSlab-Regular',
+                    fontSize: scaleFontSize(15),
+                    width: horizontalScale(290),
+                    alignSelf: 'center',
+                    backgroundColor: '#3C6991',
+                    color: 'white',
+                    marginVertical: verticalScale(5),
+                    padding: horizontalScale(10),
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: '#5188B6',
+                  }}
+                  placeholderTextColor="white"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={text => setPassword(text)}
+                />
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    top: verticalScale(15),
+                    right: 20,
+                  }}
+                  onPress={togglePasswordVisibility}>
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEye : faEyeSlash}
+                    size={24}
+                    color="#074173"
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableWithoutFeedback>
+                <View
+                  style={{
+                    marginVertical: verticalScale(10),
+                    borderWidth: 1,
+                    width: horizontalScale(290),
+                    borderColor: '#235A8A',
+                    alignItems: 'center',
+                    borderRadius: 5,
+                    overflow: 'hidden',
+                  }}>
+                  <Button
+                    color="#235A8A"
+                    onPress={handleLogin}
+                    size="lg"
+                    containerStyle={{
+                      backgroundColor: '#235A8A',
+                      flex: 1,
+
+                      justifyContent: 'center',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingHorizontal: horizontalScale(20),
+                        width: '100%',
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'RobotoSlab-Regular',
+                          fontSize: scaleFontSize(24),
+                          fontWeight: '300',
+                          color: 'white',
+                          textAlign: 'center',
+                          flex: 1, // Take all available space
+                        }}>
+                        Login
+                      </Text>
+                      <FontAwesomeIcon
+                        icon={faRightToBracket}
+                        style={{marginLeft: 5, color: '#ffffff'}}
+                      />
+                    </View>
+                  </Button>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+
+            <TouchableOpacity onPress={handleforgotpassword}>
               <Text
                 style={{
-                  fontSize: 24,
-                  fontWeight: '300',
+                  fontFamily: 'RobotoSlab-Light',
                   color: 'white',
                   textAlign: 'center',
+                  fontWeight: '300',
+                  fontSize: scaleFontSize(25),
+                  marginTop: verticalScale(10),
                 }}>
-                Login
+                Forgot My Password
               </Text>
-            </Button>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleRegisterPress}>
+              <Text
+                style={{
+                  fontFamily: 'RobotoSlab-Light',
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: '300',
+                  fontSize: scaleFontSize(25),
+                  marginVertical: verticalScale(10),
+                }}>
+                Register
+              </Text>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
-
-      <TouchableOpacity onPress={() => console.log('Forgot password')}>
-        <Text
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: '300',
-            fontSize: 16,
-            marginTop: 10,
-            marginBottom: 10,
-          }}>
-          Forgot My Password
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={handleRegisterPress}>
-        <Text
-          style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: '300',
-            fontSize: 20,
-            marginVertical: 10,
-          }}>
-          Register
-        </Text>
-      </TouchableOpacity>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

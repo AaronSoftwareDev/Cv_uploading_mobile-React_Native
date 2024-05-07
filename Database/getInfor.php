@@ -1,9 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:8081");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 include 'db_connection.php';
 
@@ -13,7 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $userEmail = $_GET["email"];
 
         // Fetch user data from the user_details table based on email
-        $selectSql = "SELECT * FROM user_details WHERE email = ?";
+        // $selectSql = "SELECT * FROM user_details in join profile WHERE email = ?";
+        $selectSql= "SELECT * 
+        FROM user_details 
+        INNER JOIN profile ON user_details.email = profile.username 
+        WHERE user_details.email = ?
+        ";
+
         $stmt = $conn->prepare($selectSql);
         $stmt->bind_param("s", $userEmail);
         $stmt->execute();

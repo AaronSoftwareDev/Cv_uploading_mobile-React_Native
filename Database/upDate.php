@@ -1,9 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 include 'db_connection.php';
 error_log("Received request method: " . $_SERVER['REQUEST_METHOD']);
